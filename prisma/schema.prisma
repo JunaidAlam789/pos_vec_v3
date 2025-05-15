@@ -1,0 +1,106 @@
+// This is your Prisma schema  file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  products    Product[]
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  image       String?
+  sku         String      @unique
+  stock       Int         @default(0)
+  category    Category    @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  orderItems  OrderItem[]
+}
+
+model User {
+  id     String  @id @default(uuid())
+  name   String
+  email  String  @unique
+  role   String  @default("customer")
+  avatar String?
+  orders Order[]
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  customer   User        @relation(fields: [customerId], references: [id])
+  customerId String
+  status     String      @default("pending")
+  total      Float
+  items      OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  price     Float
+}
+
+model SalesAnalytics {
+  id           String   @id @default(uuid())
+  orderId      String
+  productId    String
+  productName  String
+  categoryId   String
+  categoryName String
+  customerId   String
+  customerName String
+  quantity     Int
+  unitPrice    Float
+  revenue      Float
+  cost         Float
+  profit       Float
+  timestamp    DateTime
+  hour         Int
+  day          Int
+  month        Int
+  year         Int
+  dayOfWeek    Int
+
+  @@index([productId])
+  @@index([categoryId])
+  @@index([customerId])
+  @@index([timestamp])
+  @@index([year, month, day])
+  @@index([dayOfWeek])
+  @@index([hour])
+}
+
+model StoreDataEmbedding {
+  id          String   @id @default(uuid())
+  content     String   @db.Text
+  contentType String   // e.g., "product", "category", "order"
+  recordId    String   // ID of the original record
+  embedding   Unsupported("vector(32)") // OpenAI embeddings are 1536 dimensions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([contentType])
+  @@index([recordId])
+}
