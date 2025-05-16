@@ -30,7 +30,9 @@ type SearchResult = {
 
 const sampleQuestions = [
   "What products do we have in the electronics category?",
-  "Show me information about our best-selling product",
+  "How many items in store",
+  "List down bakery eatable items",
+  "List down stationary items",
   "When was the last order placed and what did it contain?",
   "Do we have any products with low stock?",
   "What's the total revenue from orders in the last month?",

@@ -97,7 +97,7 @@ model StoreDataEmbedding {
   content     String   @db.Text
   contentType String   // e.g., "product", "category", "order"
   recordId    String   // ID of the original record
-  embedding   Unsupported("vector(32)") // OpenAI embeddings are 1536 dimensions
+  embedding   Unsupported("vector(768)") // OpenAI embeddings are 1536 dimensions, small 768
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
