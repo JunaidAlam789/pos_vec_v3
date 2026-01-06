@@ -49,7 +49,7 @@ export default async function LandingPage() {
               <Link href="/auth/login">Sign In</Link>
             </Button>
             <Button asChild size="sm" className="hidden md:flex">
-              <Link href="/dashboard">Shop Now</Link>
+              <Link href="#products">Shop Now</Link>
             </Button>
             <LandingCart />
             <MobileNav />
@@ -74,7 +74,7 @@ export default async function LandingPage() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button asChild size="lg" className="px-8">
-                    <Link href="/dashboard">
+                    <Link href="#products">
                       Shop Now <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
